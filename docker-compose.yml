@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: windi-app
+    container_name: windi-app
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    networks:
+      - windi
+  
+  postgres:
+    image: postgres:17.2-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+
+
+  # web:
+  #   build: .
+  #   command: uvicorn src.core.app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+  #   volumes:
+  #     - ./:/src/
+  #   ports:
+  #     - "8002:8000"
+  #   networks:
+  #     - windi
+
+
+volumes:
+  postgres_data:
+
+networks:
+  windi:

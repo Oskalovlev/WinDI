@@ -1,8 +1,8 @@
 from fastapi import (
     APIRouter,
     Depends,
-    HTTPException,
-    status
+    # HTTPException,
+    # status
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,7 +12,7 @@ from src.domain.entities.users.models.users_model import UsersModel as User
 from src.domain.entities.users.schemas.users_schema import (
     UserReadSchema,
     UserCreateSchema,
-    UserUpdateSchema
+    # UserUpdateSchema
 )
 
 router = APIRouter()
