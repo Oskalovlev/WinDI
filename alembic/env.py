@@ -1,3 +1,4 @@
+# import os
 import asyncio
 from logging.config import fileConfig
 
@@ -5,27 +6,34 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
+# from dotenv import load_dotenv
 from alembic import context
 
 from src.core.database.alembic.base import Base
 from src.core.database.config import db_settings as settings
 
+# load_dotenv(".env")
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-section = config.config_ini_section
-config.get_section_option(section, "DB_USER", settings.database.DB_USER)
-config.get_section_option(section, "DB_PASS", settings.database.DB_PASS)
-config.get_section_option(section, "DB_HOST", settings.database.DB_HOST)
-config.get_section_option(section, "DB_PORT", settings.database.DB_PORT)
-config.get_section_option(section, "DB_NAME", settings.database.DB_NAME)
+# config.set_main_option('sqlalchemy.url', os.environ['DATABASE_URL'])
+
+# section = config.config_ini_section
+# params_to_check = ["DB_USER", "DB_PASS", "DB_HOST", "DB_PORT", "DB_NAME"]
+
+# for param_name in params_to_check:
+#     default_value = getattr(settings.database, param_name)
+#     print(settings.database)
+#     config.get_section_option(section, param_name, default_value)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+config.set_main_option("sqlalchemy.url", settings.database.DATABASE_URL_asyncpg)
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel

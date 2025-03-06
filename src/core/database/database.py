@@ -8,11 +8,11 @@ from sqlalchemy.orm import (
     declared_attr
 )
 
-from src.core.database.config import db_settings
+from src.core.database.config import db_settings as settings
 
 async_engine = create_async_engine(
-    url=db_settings.database.DATABASE_URL_asyncpg,
-    echo=True
+    url=settings.database.DATABASE_URL_asyncpg,
+    echo=settings.database.ECHO
 )
 
 async_session_factory = async_sessionmaker(async_engine, class_=AsyncSession)
@@ -25,7 +25,7 @@ class Base(DeclarativeBase):
 
         name = cls.__name__.lower()
         if "model" in name:
-            return name.replace("model", "")
+            return name.replace("model", "s")
 
 
 async def get_async_session():

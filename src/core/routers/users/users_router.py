@@ -6,9 +6,9 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.crud import users_crud
+from src.core.repositories import users_crud
 from src.core.database.database import get_async_session
-from src.domain.entities.users.models.users_model import UsersModel as User
+from src.domain.entities.users.models.users_model import UserModel as User
 from src.domain.entities.users.schemas.users_schema import (
     UserReadSchema,
     UserCreateSchema,
