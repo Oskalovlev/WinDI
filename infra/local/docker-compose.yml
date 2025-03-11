@@ -2,18 +2,18 @@ version: "3.8"
 
 services:
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
 
-  #   image: windi-app
-  #   container_name: windi-app
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8010:8010"
-  #   networks:
-  #     - windi
+    image: windi-app
+    container_name: windi-app
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    networks:
+      - windi
   
   postgres:
     image: postgres:17.2-alpine
@@ -21,7 +21,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

@@ -171,7 +171,4 @@ cython_debug/
 .pypirc
 
 # Alembic migrations
-alembic
-alembic/version
-alembic/version/
-
+versions
