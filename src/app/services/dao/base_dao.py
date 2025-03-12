@@ -1,8 +1,8 @@
-# from sqlalchemy import (
-#     update as sqlalchemy_upadet,
-#     delete as sqlachemy_delete,
-#     func
-# )
+from sqlalchemy import (
+    update as sqlalchemy_update,
+    delete as sqlalchemy_delete,
+    # func
+)
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 
@@ -46,7 +46,63 @@ class BaseDAO:
                 session.add(new_instance)
                 try:
                     await session.commit()
-                except SQLAlchemyError as err:
+                except SQLAlchemyError as e:
                     await session.rollback()
-                    raise err
+                    raise e
                 return new_instance
+
+    @classmethod
+    async def add_many(cls, instances: list[dict]):
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                new_instances = [cls.model(**values) for values in instances]
+                session.add_all(new_instances)
+                try:
+                    await session.commit()
+                except SQLAlchemyError as e:
+                    await session.rollback()
+                    raise e
+                return new_instances
+
+    @classmethod
+    async def update(cls, filter_by, **values):
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                query = (
+                    sqlalchemy_update(cls.model)
+                    .where(*[
+                        getattr(cls.model, k) == v
+                        for k, v in filter_by.items()
+                    ])
+                    .values(**values)
+                    .execution_options(synchronize_session="fetch")
+                )
+                result = await session.execute(query)
+                try:
+                    await session.commit()
+                except SQLAlchemyError as e:
+                    await session.rollback()
+                    raise e
+                return result.rowcount
+
+    @classmethod
+    async def delete(cls, delete_all: bool = False, **filter_by):
+
+        if delete_all is False:
+            if not filter_by:
+                raise ValueError(
+                    "Необходимо указать хотя бы один параметр для удаления."
+                )
+
+        async with async_session_factory() as session:
+            async with session.begin():
+                query = sqlalchemy_delete(cls.model).filter_by(**filter_by)
+                result = await session.execute(query)
+                try:
+                    await session.commit()
+                except SQLAlchemyError as e:
+                    await session.rollback()
+                    raise e
+                return result.rowcount

@@ -14,8 +14,8 @@ services:
   #     - "8010:8010"
   #   networks:
   #     - windi
-  
-  postgres:
+
+  db:
     image: postgres:17.2-alpine
     restart: always
     volumes:

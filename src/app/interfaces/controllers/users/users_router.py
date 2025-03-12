@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import (
     APIRouter,
@@ -15,13 +15,15 @@ from src.app.services.deps import (
     SessionDep
 )
 from src.app.domain.repositories.users.users_repository import UserRepository
+from src.app.services.dao.users.users_dao import UserDAO
 from src.app.services.database import get_async_session
-from src.app.domain.entities.users.models.users_model import UserModel as User
+from src.app.domain.entities.users.models.user_model import BUserModel as User
 from src.app.domain.entities.users.schemas.users_schema import (
-    UserReadSchema,
+    # UserReadSchema,
     UserCreateSchema,
     # UserUpdateSchema
 )
+from src.app.domain.entities.users.schemas.users_auth_schema import UserReadSchema
 
 router = APIRouter()
 
@@ -56,13 +58,19 @@ async def create_user(
     user = await UserRepository.create_user(session=session, user=user)
 
 
-@router.get(
-    "/",
-    response_model=UserReadSchema,
-    response_model_exclude_none=True
-)
-async def get_multi(
-    users: UserReadSchema,
-    session: AsyncSession = Depends(get_async_session)
-):
-    return await UserRepository.get_multi_users(users=users, session=session)
+# @router.get(
+#     "/",
+#     response_model=UserReadSchema,
+#     response_model_exclude_none=True
+# )
+# async def get_multi(
+#     users: UserReadSchema,
+#     session: AsyncSession = Depends(get_async_session)
+# ):
+#     return await UserRepository.get_multi_users(users=users, session=session)
+
+
+@router.get("/users", response_model=List[UserReadSchema])
+async def get_users():
+    users_all = await UserDAO.find_all()
+    return [{"id": user.id, "name": user.name} for user in users_all]

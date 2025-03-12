@@ -1,16 +1,16 @@
 from typing import Annotated
 
-from jwt import JWT
+import jwt
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
-from jwt.exceptions import InvalidKeyTypeError
+from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.services.config.security_config import security_settings
 from src.app.services.exeptions.statuses2 import ExceptionStatuses
 from src.app.services.database import get_async_session
-from src.app.domain.entities.users.models.users_model import UserModel as User
+from src.app.domain.entities.users.models.user_model import BUserModel as User
 from src.app.domain.entities.users.token.token_models import (
     TokenPayloadModel as TokenPayload
 )
@@ -25,13 +25,13 @@ TokenDep = Annotated[str, Depends(reusable_OAuth2)]
 
 async def get_current_user(session: SessionDep, token: TokenDep) -> User:
     try:
-        payload = JWT.decode(
+        payload = jwt.decode(
             token,
             security_settings.security.SECRET_KEY,
             security_settings.security.ALGORITHM
         )
         token_data = TokenPayload(**payload)
-    except (InvalidKeyTypeError, ValidationError):
+    except (InvalidTokenError, ValidationError):
         raise ExceptionStatuses.status_401(detail="")
 
     user = session.get(User, token_data.sub)

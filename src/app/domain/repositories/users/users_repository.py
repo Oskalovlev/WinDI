@@ -1,10 +1,10 @@
 from typing import Optional, List
 
-import bcrypt
+# import bcrypt
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.domain.entities.users.models.users_model import UserModel as User
+from src.app.domain.entities.users.models.user_model import BUserModel as User
 from src.app.domain.entities.users.schemas.users_schema import UserCreateSchema
 from src.app.services.exeptions.statuses2 import ExceptionStatuses
 from src.app.services.exeptions.details import USER_BY_ID_NOT_FOUND_404
@@ -17,16 +17,16 @@ class UserRepository:
 
     @staticmethod
     async def create_user(self, user: UserCreateSchema) -> User:
-        hashed_password = (
-            bcrypt.hashpw(
-                user.password.get_secret_value().encode("utf-8"),
-                bcrypt.gensalt()
-            )
-        )
-        new_user = User.verefy_password(
-            plain_password=hashed_password
-        )
-        # new_user = User(**user.model_dump())
+        # hashed_password = (
+        #     bcrypt.hashpw(
+        #         user.password.get_secret_value().encode("utf-8"),
+        #         bcrypt.gensalt()
+        #     )
+        # )
+        # new_user = User.verefy_password(
+        #     plain_password=hashed_password
+        # )
+        new_user = User(**user.model_dump())
         self.session.add(new_user)
         await self.session.commit()
         await self.session.refresh(new_user)

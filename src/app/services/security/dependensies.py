@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
-from jwt import JWT
-from jwt.exceptions import JWTDecodeError
+import jwt
+from jwt.exceptions import PyJWKError
 from fastapi import Request, HTTPException, Depends, status
 
 from src.app.services.config.security_config import get_auth_data
@@ -26,12 +26,12 @@ async def get_current_user(token: str = Depends(get_token)):
 
     try:
         auth_data = get_auth_data()
-        payload = JWT.decode(
+        payload = jwt.decode(
             token,
-            auth_data=auth_data["secret_key"],
+            key=auth_data["secret_key"],
             algorithms=auth_data["algorithm"]
         )
-    except JWTDecodeError:
+    except PyJWKError:
         raise NoJWTException
 
     expire: str = payload.get("exp")

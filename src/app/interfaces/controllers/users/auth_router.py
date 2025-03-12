@@ -1,6 +1,9 @@
+from typing import List
+
 from fastapi import APIRouter, Response
-# from fastapi.requests import Request
-# from fastapi.responses import HTMLResponse
+from fastapi.requests import Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 from src.app.services.exeptions.statuses import (
     UserAlreadyExistsException,
@@ -13,16 +16,29 @@ from src.app.services.security.auth_users import (
     create_access_token
 )
 from src.app.services.dao.users.users_dao import UserDAO
-from src.app.domain.entities.users.schemas.suser_schema import (
-    SUserRegisterSchema,
-    SUserAuthSchema
+from src.app.domain.entities.users.schemas.users_auth_schema import (
+    UserRegisterSchema,
+    UserAuthSchema,
+    UserReadSchema
 )
 
 router = APIRouter()
 
+templates = Jinja2Templates(directory="src/templates")
+
+
+@router.get(
+    "/",
+    response_class=HTMLResponse,
+    summary="Страница авторизации"
+)
+async def get_categories(request: Request):
+
+    return templates.TemplateResponse("auth.html", {"request": request})
+
 
 @router.post("/register/")
-async def register_user(user_data: SUserRegisterSchema) -> dict:
+async def register_user(user_data: UserRegisterSchema) -> dict:
 
     user = await UserDAO.find_one_or_none(email=user_data.email)
     if user:
@@ -43,7 +59,7 @@ async def register_user(user_data: SUserRegisterSchema) -> dict:
 @router.post("/login/")
 async def auth_user(
     response: Response,
-    user_data: SUserAuthSchema
+    user_data: UserAuthSchema
 ):
 
     check = await authenticate_user(
@@ -69,3 +85,9 @@ async def logout_user(response: Response):
 
     response.delete_cookie(key="users_access_token")
     return {"message": "Пользователь успешно вышел из системы"}
+
+
+@router.get("/users", response_model=List[UserReadSchema])
+async def get_users():
+    users_all = await UserDAO.find_all()
+    return [{"id": user.id, "name": user.name} for user in users_all]

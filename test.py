@@ -1,20 +1,15 @@
-# from src.core.database.config import db_settings as settings
+# from passlib.context import CryptContext
 
-# print(settings.database)
+# context = CryptContext(schemes=["bcrypt"])
 
-import configparser
+# # Проверяем работу bcrypt
+# password_hash = context.hash("mysecretpassword")
+# print(password_hash)
 
-def get_config_options():
-    parser = configparser.ConfigParser()
-    parser.read('alembic.ini')
-    
-    options = {}
-    if parser.has_section('alembic'):
-        items = parser.items('alembic')
-        for key, value in items:
-            options[key] = value
-    
-    return options
+from typing import Text
+from sqlalchemy import create_engine
 
-options = get_config_options()
-print(options.get('sqlalchemy.url'))
+engine = create_engine('postgresql+asyncpg://postgres:postgres@localhost:5433/windi')
+
+with engine.connect() as conn:
+    conn.execute(Text("CREATE TABLE public.alembic_version (version_num VARCHAR(32) NOT NULL, CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num))"))

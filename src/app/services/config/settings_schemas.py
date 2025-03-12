@@ -6,22 +6,19 @@ class AppConfig(BaseModel):
     APP_TITLE: str = "WinDI"
     DESCRIPTION: str = "Мессенджер"
 
+    class Config:
+        env_file = ".env"
+
 
 class DatabaseConfig(BaseModel):
 
-    POSTGRES_ASYNC_PREFIX: str = "postgresql+asyncpg://"
+    POSTGRES_ASYNC_PREFIX: str
 
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASS: str = "postgres"
-    POSTGRES_HOST: str = "localhost"
-    POSTGRES_PORT: int = 5433
-    POSTGRES_DB: str = "windi"
-
-    # DB_HOST: str
-    # DB_PORT: str
-    # DB_NAME: str
-    # DB_USER: str
-    # DB_PASS: str
+    POSTGRES_USER: str
+    POSTGRES_PASS: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
+    POSTGRES_DB: str
 
     ECHO: bool
 
@@ -40,10 +37,16 @@ class DatabaseConfig(BaseModel):
 class SecurityConfig(BaseModel):
 
     SECRET_KEY: str
-    ALGORITHM: str
+    ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    class Config:
+        env_file = ".env"
 
 
 class ExeptionsConfig(BaseModel):
 
     USER_BY_ID_NOT_FOUND: str
+
+    class Config:
+        env_file = ".env"

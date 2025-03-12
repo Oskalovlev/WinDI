@@ -25,7 +25,7 @@ class Base(DeclarativeBase):
 
         name = cls.__name__.lower()
         if "model" in name:
-            return name.replace("model", "s")
+            return name.replace("model", "")
 
 
 async def get_async_session():

@@ -1,5 +1,5 @@
 from src.app.services.dao.base_dao import BaseDAO
-from src.app.domain.entities.users.models.suser_model import SUserModel as User
+from src.app.domain.entities.users.models.users_model import UserModel as User
 
 
 class UserDAO(BaseDAO):

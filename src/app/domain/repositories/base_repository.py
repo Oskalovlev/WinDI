@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.domain.entities.users.models.users_model import UserModel as User
+from src.app.domain.entities.users.models.user_model import UserModel as User
 
 
 class BaseRepository:
