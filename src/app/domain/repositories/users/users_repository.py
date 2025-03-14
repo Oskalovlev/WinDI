@@ -6,8 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.domain.entities.users.models.user_model import BUserModel as User
 from src.app.domain.entities.users.schemas.users_schema import UserCreateSchema
-from src.app.services.exeptions.statuses2 import ExceptionStatuses
-from src.app.services.exeptions.details import USER_BY_ID_NOT_FOUND_404
+from src.app.exeptions.statuses import ExceptionStatuses
+from src.app.exeptions.details import USER_BY_ID_NOT_FOUND_404
 
 
 class UserRepository:

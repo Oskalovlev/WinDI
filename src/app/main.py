@@ -4,10 +4,10 @@ from fastapi.responses import RedirectResponse
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.app.services.exeptions.statuses import (
+from src.app.exeptions.auth_exp import (
     TokenExpiredException, TokenNoFoundException
 )
-from src.app.services.config.app_config import app_settings
+from src.app.config.app_config import app_settings
 from src.app.interfaces.controllers.main_router import (
     main_router as all_routers
 )

@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from src.app.services.config.settings_schemas import DatabaseConfig
+from src.app.config.settings_schemas import DatabaseConfig
 
 
 class DatabaseSettings(BaseSettings):

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.app.services.database import Base
+from src.app.database import Base
 from src.app.domain.entities.base_models import BaseIntIDModel
 
 

@@ -5,17 +5,17 @@ from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from src.app.services.exeptions.statuses import (
+from src.app.exeptions.auth_exp import (
     UserAlreadyExistsException,
     IncorrectEmailOrPasswordException,
     PasswordMismatchException
 )
-from src.app.services.security.auth_users import (
+from src.app.auth.auth_users import (
     get_password_hash,
     authenticate_user,
     create_access_token
 )
-from src.app.services.dao.users.users_dao import UserDAO
+from src.app.domain.dao.users.users_dao import UserDAO
 from src.app.domain.entities.users.schemas.users_auth_schema import (
     UserRegisterSchema,
     UserAuthSchema,
@@ -25,6 +25,12 @@ from src.app.domain.entities.users.schemas.users_auth_schema import (
 router = APIRouter()
 
 templates = Jinja2Templates(directory="src/templates")
+
+
+@router.get("/users", response_model=List[UserReadSchema])
+async def get_users():
+    users_all = await UserDAO.find_all()
+    return [{"id": user.id, "name": user.name} for user in users_all]
 
 
 @router.get(
@@ -68,10 +74,12 @@ async def auth_user(
     )
     if check is None:
         raise IncorrectEmailOrPasswordException
+
     access_token = create_access_token({"sub": str(check.id)})
     response.set_cookie(
         key="users_access_token", value=access_token, httponly=True
     )
+
     return {
         "ok": True,
         "access_token": access_token,
@@ -85,9 +93,3 @@ async def logout_user(response: Response):
 
     response.delete_cookie(key="users_access_token")
     return {"message": "Пользователь успешно вышел из системы"}
-
-
-@router.get("/users", response_model=List[UserReadSchema])
-async def get_users():
-    users_all = await UserDAO.find_all()
-    return [{"id": user.id, "name": user.name} for user in users_all]

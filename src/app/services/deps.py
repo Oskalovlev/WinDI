@@ -7,9 +7,9 @@ from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.services.config.security_config import security_settings
-from src.app.services.exeptions.statuses2 import ExceptionStatuses
-from src.app.services.database import get_async_session
+from src.app.config.security_config import security_settings
+from src.app.exeptions.statuses import ExceptionStatuses
+from src.app.database import get_async_session
 from src.app.domain.entities.users.models.user_model import BUserModel as User
 from src.app.domain.entities.users.token.token_models import (
     TokenPayloadModel as TokenPayload

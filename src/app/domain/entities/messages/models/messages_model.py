@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import ForeignKey, Text, TIMESTAMP
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.app.services.database import Base
+from src.app.database import Base
 from src.app.domain.entities.base_models import BaseIntIDModel
 
 
@@ -13,8 +13,8 @@ class MessageModel(BaseIntIDModel, Base):
     _index = True
 
     # chat_id: Mapped[int] = mapped_column(ForeignKey("chat.id"))
-    sender_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    recipient_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    sender_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    recipient_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     content: Mapped[str] = mapped_column(Text, nullable=False)
     # timestamp: Mapped[datetime] = mapped_column(type_=TIMESTAMP(timezone=True))
     # is_read: Mapped[bool] = mapped_column(default=False)

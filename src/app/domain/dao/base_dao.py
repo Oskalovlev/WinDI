@@ -6,7 +6,7 @@ from sqlalchemy import (
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 
-from src.app.services.database import async_session_factory
+from src.app.database import async_session_factory
 
 
 class BaseDAO:

@@ -4,7 +4,7 @@ from typing import Optional, Any
 import jwt
 from passlib.context import CryptContext
 
-from src.app.services.config.security_config import (
+from src.app.config.security_config import (
     security_settings as settings
 )
 

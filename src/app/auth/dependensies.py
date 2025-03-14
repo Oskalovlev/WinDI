@@ -1,12 +1,12 @@
 from datetime import datetime, timezone
 
 import jwt
-from jwt.exceptions import PyJWKError
+from jwt.exceptions import PyJWTError
 from fastapi import Request, HTTPException, Depends, status
 
-from src.app.services.config.security_config import get_auth_data
-from src.app.services.dao.users.users_dao import UserDAO
-from src.app.services.exeptions.statuses import (
+from src.app.config.security_config import get_auth_data
+from src.app.domain.dao.users.users_dao import UserDAO
+from src.app.exeptions.auth_exp import (
     TokenExpiredException,
     TokenNoFoundException,
     NoJWTException,
@@ -16,7 +16,7 @@ from src.app.services.exeptions.statuses import (
 
 def get_token(request: Request):
 
-    token = request.cookies.get("user_access_token")
+    token = request.cookies.get("users_access_token")
     if not token:
         raise TokenNoFoundException
     return token
@@ -31,7 +31,7 @@ async def get_current_user(token: str = Depends(get_token)):
             key=auth_data["secret_key"],
             algorithms=auth_data["algorithm"]
         )
-    except PyJWKError:
+    except PyJWTError:
         raise NoJWTException
 
     expire: str = payload.get("exp")

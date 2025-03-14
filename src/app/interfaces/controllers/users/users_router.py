@@ -8,15 +8,15 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.services.exeptions.statuses2 import ExceptionStatuses
+from src.app.exeptions.statuses import ExceptionStatuses
 from src.app.services.deps import (
     get_current_active_superuser,
     # CurrentUser,
     SessionDep
 )
 from src.app.domain.repositories.users.users_repository import UserRepository
-from src.app.services.dao.users.users_dao import UserDAO
-from src.app.services.database import get_async_session
+from src.app.domain.dao.users.users_dao import UserDAO
+from src.app.database import get_async_session
 from src.app.domain.entities.users.models.user_model import BUserModel as User
 from src.app.domain.entities.users.schemas.users_schema import (
     # UserReadSchema,

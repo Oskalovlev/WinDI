@@ -8,7 +8,7 @@ from sqlalchemy.orm import (
     declared_attr
 )
 
-from src.app.services.config.database_config import db_settings as settings
+from src.app.config.database_config import db_settings as settings
 
 async_engine = create_async_engine(
     url=settings.database.DATABASE_URL_asyncpg,
@@ -25,7 +25,7 @@ class Base(DeclarativeBase):
 
         name = cls.__name__.lower()
         if "model" in name:
-            return name.replace("model", "")
+            return name.replace("model", "s")
 
 
 async def get_async_session():

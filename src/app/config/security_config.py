@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from src.app.services.config.settings_schemas import SecurityConfig
+from src.app.config.settings_schemas import SecurityConfig
 
 
 class SecuritySettings(BaseSettings):

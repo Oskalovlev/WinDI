@@ -1,4 +1,4 @@
-from src.app.services.database import Base  # noqa
+from src.app.database import Base  # noqa
 
 # from src.app.domain.entities.users.models.user_model import BUserModel  # noqa
 from src.app.domain.entities.users.models.users_model import UserModel  # noqa

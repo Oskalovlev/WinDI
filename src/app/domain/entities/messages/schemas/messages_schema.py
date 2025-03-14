@@ -1,9 +1,11 @@
-from datetime import datetime
+# from datetime import datetime
 
-from src.app.domain.entities.base_schemas import PydanticBaseSchema
+from src.app.domain.entities.base_schemas import (
+    PydanticBaseSchema, PydanticIntIDSchema
+)
 
 
-class MessageReadSchema(PydanticBaseSchema):
+class MessageReadSchema(PydanticIntIDSchema):
 
     # chat_id: int
     sender_id: int

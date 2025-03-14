@@ -12,9 +12,9 @@ from fastapi import (
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from src.app.services.dao.messages.messages_dao import MessagesDAO
-from src.app.services.dao.users.users_dao import UserDAO
-from src.app.services.security.dependensies import (
+from src.app.domain.dao.messages.messages_dao import MessagesDAO
+from src.app.domain.dao.users.users_dao import UserDAO
+from src.app.auth.dependensies import (
     get_current_user
 )
 from src.app.domain.entities.users.models.users_model import UserModel as User
@@ -38,6 +38,7 @@ async def get_chat_page(
     user_data: User = Depends(get_current_user)
 ):
     users_all = await UserDAO.find_all()
+
     return templates.TemplateResponse(
         "chat.html",
         {
@@ -58,7 +59,9 @@ async def notify_user(user_id: int, message: dict):
         await websocket.send_json(message)
 
 
-@router.websocket("/ws/{user_id}")
+@router.websocket(
+    "/ws/{user_id}"
+)
 async def websocket_endpoint(websocket: WebSocket, user_id: int):
 
     await websocket.accept()
@@ -71,7 +74,10 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
         active_connections.pop(user_id, None)
 
 
-@router.get("/messages/{user_id}", response_model=List[MessageReadSchema])
+@router.get(
+    "/messages/{user_id}",
+    response_model=List[MessageReadSchema]
+)
 async def get_messages(
     user_id: int,
     current_user: User = Depends(get_current_user)
@@ -81,7 +87,10 @@ async def get_messages(
     ) or []
 
 
-@router.post("/messages", response_model=MessageCreateSchema)
+@router.post(
+    "/messages",
+    response_model=MessageCreateSchema
+)
 async def send_message(
     message: MessageCreateSchema,
     current_user: User = Depends(get_current_user)

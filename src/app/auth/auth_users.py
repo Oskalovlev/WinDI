@@ -4,8 +4,8 @@ import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
-from src.app.services.config.security_config import get_auth_data
-from src.app.services.dao.users.users_dao import UserDAO
+from src.app.config.security_config import get_auth_data
+from src.app.domain.dao.users.users_dao import UserDAO
 
 
 def create_access_token(data: dict) -> str:
