@@ -8,12 +8,11 @@
 </head>
 <body>
 <div class="chat-container">
-    <div class="user-list" id="userList">
-        <!-- Сначала выводим "Избранное" -->
-        <div class="user-item" data-user-id="{{ user.id }}">
+    <div class="items-list" id="itemsList">
+        <div class="favorite" data-user-id="{{ user.id }}">
             Избранное
         </div>
-        <!-- Выводим остальных пользователей -->
+
         {% for chat in users_all %}
             {% if chat.id != user.id %}
                 <div class="user-item" data-user-id="{{ chat.id }}">
@@ -21,6 +20,7 @@
                 </div>
             {% endif %}
         {% endfor %}
+
     </div>
     <div class="chat-area">
         <div class="chat-header" id="chatHeader">

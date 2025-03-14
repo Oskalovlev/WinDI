@@ -141,7 +141,7 @@ async function fetchUsers() {
 
         // Создаем элемент "Избранное" для текущего пользователя
         const favoriteElement = document.createElement('div');
-        favoriteElement.classList.add('user-item');
+        favoriteElement.classList.add('favorite');
         favoriteElement.setAttribute('data-user-id', currentUserId);
         favoriteElement.textContent = 'Избранное';
 

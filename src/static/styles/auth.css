@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #222;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,28 +9,31 @@ body {
 }
 
 .container {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 300px;
+    background-color: #505050;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(152, 152, 152, 0.5);
+    width: 400px;
 }
 
 .tabs {
     display: flex;
+    margin-bottom: 1rem;
 }
 
 .tab {
     flex: 1;
     text-align: center;
     padding: 10px;
-    background-color: #f0f0f0;
+    background-color: #7e7e7e;
     cursor: pointer;
+    border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+    margin-right: 0.2rem;
     transition: background-color 0.3s;
 }
 
 .tab.active {
-    background-color: white;
+    background-color: #ffa500;
     font-weight: bold;
 }
 
@@ -49,23 +52,35 @@ body {
 input {
     width: 100%;
     padding: 10px;
+    background-color: #6b6969;
+    color: #eee;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+.neon-button {
+    background-color: #ff0064;
+    color: #eeeeee;
     border: none;
-    border-radius: 4px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-weight: bold;
+    box-shadow: 0 0 1rem rgba(255, 0, 100, 0.7);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-button:hover {
-    background-color: #45a049;
+.neon-button:hover {
+    background-color: #ff3385;
+    box-shadow: 0 0 1.5rem rgba(255, 0, 100, 0.9);
 }
+
+/* h2 {
+    color: #ff0064;
+    text-align: center;
+    margin-bottom: 1.5rem;
+} */
