@@ -1,0 +1,58 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "socket.io-client": "https://cdn.socket.io/4.7.2/socket.io.esm.min.js"
+            }
+        }
+    </script>
+    <script src="script.js" type="module"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <aside class="sidebar">
+            <div class="user-list">
+                <h3>Пользователи</h3>
+                <ul id="users">
+                </ul>
+            </div>
+            <div class="group-list">
+                <h3>Группы</h3>
+                <ul id="groups">
+                </ul>
+            </div>
+            <button id="create-group-btn">Создать группу</button>
+        </aside>
+
+        <main class="chat-area">
+            <div class="chat-header">
+                <h2 id="chat-title">Выберите пользователя или группу</h2>
+            </div>
+            <div class="message-area" id="message-area">
+            </div>
+            <div class="input-area">
+                <input type="text" id="message-input" placeholder="Введите сообщение">
+                <button id="send-button">Отправить</button>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Создать группу</h2>
+            <input type="text" id="group-name" placeholder="Название группы">
+            <input type="email" id="invite-email" placeholder="Email участника">
+            <button id="add-member-btn">Добавить участника</button>
+            <button id="create-group-confirm-btn">Создать</button>
+            <ul id="group-members-list"></ul>
+        </div>
+    </div>
+
+</body>
+</html>

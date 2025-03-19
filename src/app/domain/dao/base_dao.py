@@ -1,7 +1,6 @@
 from sqlalchemy import (
     update as sqlalchemy_update,
-    delete as sqlalchemy_delete,
-    # func
+    delete as sqlalchemy_delete
 )
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select

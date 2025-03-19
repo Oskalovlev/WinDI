@@ -1,13 +1,15 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.app.exeptions.auth_exp import (
-    TokenExpiredException, TokenNoFoundException
+    TokenExpiredException,
+    TokenNoFoundException
 )
 from src.app.config.app_config import app_settings
+from src.app.interfaces.services.connection_manager import manager
 from src.app.interfaces.controllers.main_router import (
     main_router as all_routers
 )
@@ -38,6 +40,37 @@ app.add_middleware(
 async def redirect_to_auth():
 
     return RedirectResponse(url="/auth")
+
+
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     await websocket.accept()
+#     while True:
+#         try:
+#             data = await websocket.receive_text()
+#             print(f"Received message: {data}")
+#             await websocket.send_text(f"Message received: {data}")
+#         except WebSocketDisconnect:
+#             break
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_json()
+            if "type" in data and data["type"] == "personal":
+                await manager.send_personal_message(
+                    data["message"],
+                    data["receiver_id"]
+                )
+            elif "type" in data and data["type"] == "group":
+                await manager.broadcast(data["message"], data["group_id"])
+            else:
+                await websocket.send_text("Invalid message format.")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
 
 @app.exception_handler(TokenExpiredException)

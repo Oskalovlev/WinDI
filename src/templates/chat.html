@@ -21,6 +21,14 @@
             {% endif %}
         {% endfor %}
 
+        {% for chat in groups_all %}
+            {% if chat.id != group.id %}
+                <div class="group-item" data-user-id="{{ chat.id }}">
+                    {{ chat.name }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
     </div>
     <div class="chat-area">
         <div class="chat-header" id="chatHeader">

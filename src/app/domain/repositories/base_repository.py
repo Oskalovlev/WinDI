@@ -20,7 +20,7 @@ class BaseRepository:
     ):
         obj_in_data = obj_in.model_dump()
         if user is not None:
-            obj_in_data['user_id'] = user.id
+            obj_in_data['users_id'] = user.id
         db_obj = self.model(**obj_in_data)
         self.session.add(db_obj)
         await self.session.commit()

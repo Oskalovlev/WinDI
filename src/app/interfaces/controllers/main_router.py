@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from src.app.interfaces.controllers import (
-    auth_router, chats_router
+    auth_router, chats_router, groups_router
 )
 
 main_router = APIRouter()
@@ -16,4 +16,8 @@ main_router.include_router(
 
 main_router.include_router(
     chats_router, prefix="/chat", tags=["Chat"]
+)
+
+main_router.include_router(
+    groups_router, prefix="/chat", tags=["Chat"]
 )

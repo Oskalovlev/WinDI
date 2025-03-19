@@ -21,6 +21,156 @@ async function logout() {
     }
 }
 
+// async function createGroup(params) {
+//     // Modal functionality
+//     createGroupBtn.addEventListener('click', () => {
+//         modal.style.display = 'block';
+//     });
+
+//     closeButton.addEventListener('click', () => {
+//         modal.style.display = 'none';
+//         clearGroupModal();
+//     });
+
+//     window.addEventListener('click', (event) => {
+//         if (event.target == modal) {
+//             modal.style.display = 'none';
+//             clearGroupModal();
+//         }
+//     });
+
+//     addMemberBtn.addEventListener('click', () => {
+//         const email = inviteEmailInput.value;
+//         if (email && !groupMembers.includes(email)) {
+//             groupMembers.push(email);
+//             const li = document.createElement('li');
+//             li.textContent = email;
+//             groupMembersList.appendChild(li);
+//             inviteEmailInput.value = '';
+//         }
+//     });
+
+//     createGroupConfirmBtn.addEventListener('click', () => {
+//         const groupName = groupNameInput.value;
+//         if (groupName && groupMembers.length > 0) {
+//             socket.emit('createGroup', { name: groupName, members: groupMembers });
+//             modal.style.display = 'none';
+//             clearGroupModal();
+//         } else {
+//             alert('Введите название группы и добавьте участников.');
+//         }
+//     });
+
+//     function clearGroupModal() {
+//         groupNameInput.value = '';
+//         inviteEmailInput.value = '';
+//         groupMembers = [];
+//         groupMembersList.innerHTML = '';
+//     }
+
+//     // Обновление списка пользователей
+//     socket.on('users', (users) => {
+//         usersList.innerHTML = '';
+//         users.forEach(user => {
+//             const li = document.createElement('li');
+//             li.textContent = user.username;
+//             li.addEventListener('click', () => {
+//                 selectedChat = { type: 'user', id: user.id, name: user.username };
+//                 chatTitle.textContent = `Чат с ${user.username}`;
+//                 loadMessages(selectedChat);
+//             });
+//             usersList.appendChild(li);
+//         });
+//     });
+
+//     // Обновление списка групп
+//     socket.on('groups', (groups) => {
+//         groupsList.innerHTML = '';
+//         groups.forEach(group => {
+//             const li = document.createElement('li');
+//             li.textContent = group.name;
+//             li.addEventListener('click', () => {
+//                 selectedChat = { type: 'group', id: group.id, name: group.name };
+//                 chatTitle.textContent = `Чат группы ${group.name}`;
+//                 loadMessages(selectedChat);
+//             });
+//             groupsList.appendChild(li);
+//         });
+//     });
+// }
+
+// Создание новой группы
+
+async function createGroup(groupTitle) {
+    try {
+        const response = await fetch('/groups', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: groupTitle })
+        });
+
+        if (!response.ok) throw new Error('Не удалось создать группу.');
+        
+        const data = await response.json();
+        console.log(`Группа создана: ${data.id}`);
+        return data.id;
+    } catch (error) {
+        console.error('Ошибка при создании группы:', error);
+    }
+}
+
+// Добавление участника в группу
+async function addMemberToGroup(groupId, userId) {
+    try {
+        const response = await fetch(`/groups/${groupId}/members`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId })
+        });
+
+        if (!response.ok) throw new Error('Не удалось добавить участника в группу.');
+        
+        console.log(`Участник добавлен в группу: ${groupId}`);
+    } catch (error) {
+        console.error('Ошибка при добавлении участника в группу:', error);
+    }
+}
+
+// Отправка сообщения в группе
+async function sendGroupMessage(groupId, message) {
+    try {
+        const payload = { group_id: groupId, content: message };
+        const response = await fetch('/group-messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error('Не удалось отправить сообщение.');
+        
+        const data = await response.json();
+        console.log(`Сообщение отправлено в группу: ${groupId}`);
+        return data.message_id;
+    } catch (error) {
+        console.error('Ошибка при отправке сообщения в группу:', error);
+    }
+}
+
+// Получение сообщений группы
+async function getGroupMessages(groupId) {
+    try {
+        const response = await fetch(`/group-messages?group_id=${groupId}`);
+        const messages = await response.json();
+
+        const messagesContainer = document.getElementById('messages');
+        messagesContainer.innerHTML = messages.map(message =>
+            createMessageElement(message.content, message.sender_id)
+        ).join('');
+    } catch (error) {
+        console.error('Ошибка получения сообщений группы:', error);
+    }
+}
+
 // Функция выбора пользователя
 async function selectUser(userId, userName, event) {
     selectedUserId = userId;

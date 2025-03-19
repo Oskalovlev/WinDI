@@ -10,7 +10,7 @@ from src.app.exeptions.auth_exp import (
     IncorrectEmailOrPasswordException,
     PasswordMismatchException
 )
-from src.app.auth.auth_users import (
+from src.app.auth.security import (
     get_password_hash,
     authenticate_user,
     create_access_token

@@ -1,21 +1,34 @@
-# from datetime import datetime
-
 from src.app.domain.entities.base_schemas import (
     PydanticBaseSchema, PydanticIntIDSchema
 )
 
 
-class MessageReadSchema(PydanticIntIDSchema):
+class MessageBaseSchema(PydanticBaseSchema):
+    content: str
 
-    # chat_id: int
+
+class MessageCreateSchema(MessageBaseSchema):
+    chat_id: int
+    sender_id: int
+
+
+class MessageUpdateSchema(MessageBaseSchema):
+    pass
+
+
+class MessageInDBSchema(MessageBaseSchema, PydanticIntIDSchema):
+    chat_id: int
     sender_id: int
     recipient_id: int
-    content: str
-    # timestamp: datetime
-    # is_read: bool
+
+    class Config:
+        from_attributes = True
 
 
-class MessageCreateSchema(PydanticBaseSchema):
+class MessageOutSchema(MessageBaseSchema, PydanticIntIDSchema):
 
-    recipient_id: int
-    content: str
+    chat_id: int
+    sender_id: int
+
+    class Config:
+        from_attributes = True

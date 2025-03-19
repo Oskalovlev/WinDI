@@ -1,0 +1,67 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles/chat.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2 id="current-user">Пользователь</h2>
+        <button id="create-group-button">Создать группу</button>
+        
+        <h3>
+          <div id="favorites">Избранное</div>
+        </h3>
+        
+        <div class="chat-list-section">
+            <h3>Личные сообщения</h3>
+            <div id="personal-messages-list">
+                <!-- List of personal messages will be added here -->
+            </div>
+        </div>
+        
+        <div class="chat-list-section">
+            <h3>Группы</h3>
+            <div id="groups-list">
+                <!-- List of groups will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="chat-list">
+            <!-- User or Group list will be shown here, depending on selected section -->
+        </div>
+        <div class="chat-window">
+            <!-- Chat messages and input area -->
+            <div class="messages"></div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Введите сообщение">
+                <button id="send-button">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-group-modal">
+        <div class="modal-content">
+            <h2>Создать группу</h2>
+            <input type="text" id="group-name" placeholder="Название группы">
+            <input type="email" id="group-member-email" placeholder="Email участника">
+            <button id="add-member-button">Добавить участника</button>
+            <button id="create-group-confirm">Создать группу</button>
+            <button id="cancel-group-creation">Отмена</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "uuid": "https://jspm.dev/uuid"
+      }
+    }
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
