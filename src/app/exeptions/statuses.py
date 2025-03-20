@@ -1,10 +1,13 @@
-from fastapi import status
-from fastapi.exceptions import HTTPException
+from fastapi import status, HTTPException
 
 
 class ExceptionStatuses:
 
-    def __init__(self, detail: str = None, optional_headers: str = None):
+    def __init__(
+        self,
+        detail: str = None,
+        optional_headers: str = None
+    ):
         self.detail = detail
         self.optional_headers = optional_headers
 
@@ -29,6 +32,6 @@ class ExceptionStatuses:
 
     def status_404(self):
         return HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=self.detail
-            )
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=self.detail
+        )
